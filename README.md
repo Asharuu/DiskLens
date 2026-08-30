@@ -91,8 +91,8 @@ Siapa pun dapat langsung mencoba DiskLens di komputer mereka hanya dengan 3 lang
 
 ### 1. Clone Repositori Ini:
 ```bash
-git clone https://github.com/Asharuu/disklens.git
-cd disklens
+git clone https://github.com/Asharuu/DiskLens.git
+cd DiskLens
 ```
 
 ---
