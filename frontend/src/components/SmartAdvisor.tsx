@@ -10,7 +10,10 @@ import {
   Square,
   Info,
   CheckCircle2,
-  Lock
+  Lock,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { AdvisorData, RecommendationItem } from '../types';
 
@@ -19,16 +22,19 @@ interface SmartAdvisorProps {
   isLoading: boolean;
   onOpenCleanModal: (selectedItems: RecommendationItem[]) => void;
   onOpenExplorer: (path: string) => void;
+  onExplainPath: (path: string) => void;
 }
 
 export const SmartAdvisor: React.FC<SmartAdvisorProps> = ({
   advisorData,
   isLoading,
   onOpenCleanModal,
-  onOpenExplorer
+  onOpenExplorer,
+  onExplainPath
 }) => {
   const [activeZone, setActiveZone] = useState<'safe' | 'review' | 'protected'>('safe');
   const [selectedItemIds, setSelectedItemIds] = useState<Record<string, boolean>>({});
+  const [expandedPathsMap, setExpandedPathsMap] = useState<Record<string, boolean>>({});
 
   // Initialize default selected items when advisorData loads
   React.useEffect(() => {
@@ -274,25 +280,69 @@ export const SmartAdvisor: React.FC<SmartAdvisorProps> = ({
 
                       {/* Target Paths list */}
                       {item.paths && item.paths.length > 0 && (
-                        <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                          {item.paths.slice(0, 2).map((p, idx) => (
-                            <div
-                              key={idx}
+                        <div className="space-y-1.5 pt-1.5">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            {(expandedPathsMap[item.id] ? item.paths : item.paths.slice(0, 2)).map((p, idx) => (
+                              <div
+                                key={idx}
+                                onClick={(e) => e.stopPropagation()}
+                                className="inline-flex items-center space-x-1.5 text-[11px] font-mono text-slate-300 bg-slate-950/90 px-2.5 py-1 rounded-lg border border-slate-800 hover:border-slate-700 transition group/chip"
+                              >
+                                <span className="truncate max-w-[240px] sm:max-w-[320px]" title={p}>
+                                  {p}
+                                </span>
+
+                                <div className="flex items-center space-x-1 pl-1 border-l border-slate-800">
+                                  {/* Info / Tanya Button */}
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      onExplainPath(p);
+                                    }}
+                                    className="p-1 rounded text-indigo-400 hover:text-indigo-300 hover:bg-indigo-600/20 transition"
+                                    title="Tanya: Ini direktori apa & apa fungsinya?"
+                                  >
+                                    <HelpCircle className="w-3.5 h-3.5" />
+                                  </button>
+
+                                  {/* Open Explorer Button */}
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      onOpenExplorer(p);
+                                    }}
+                                    className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                                    title="Buka di Windows File Explorer"
+                                  >
+                                    <ExternalLink className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Expand / Collapse Toggle for Hidden Folders */}
+                          {item.paths.length > 2 && (
+                            <button
+                              type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                onOpenExplorer(p);
+                                setExpandedPathsMap(prev => ({ ...prev, [item.id]: !prev[item.id] }));
                               }}
-                              className="inline-flex items-center space-x-1 text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-1 rounded-md border border-slate-800 hover:text-indigo-300 hover:border-slate-700 transition"
-                              title="Klik untuk membuka folder ini di Windows Explorer"
+                              className="inline-flex items-center space-x-1 text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 px-2.5 py-1 rounded-md border border-indigo-500/20 transition"
                             >
-                              <span className="truncate max-w-[280px]">{p}</span>
-                              <ExternalLink className="w-2.5 h-2.5 flex-shrink-0" />
-                            </div>
-                          ))}
-                          {item.paths.length > 2 && (
-                            <span className="text-[10px] text-slate-500 font-mono">
-                              +{item.paths.length - 2} folder lainnya
-                            </span>
+                              {expandedPathsMap[item.id] ? (
+                                <>
+                                  <ChevronUp className="w-3.5 h-3.5" />
+                                  <span>Sembunyikan folder</span>
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="w-3.5 h-3.5" />
+                                  <span>+{item.paths.length - 2} folder lainnya (Klik untuk lihat & cek semua)</span>
+                                </>
+                              )}
+                            </button>
                           )}
                         </div>
                       )}

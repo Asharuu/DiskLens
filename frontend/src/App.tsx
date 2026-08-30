@@ -190,6 +190,7 @@ export function App() {
               setIsCleanModalOpen(true);
             }}
             onOpenExplorer={handleOpenExplorer}
+            onExplainPath={handleExplainPath}
           />
         ) : (
           <FileTree
