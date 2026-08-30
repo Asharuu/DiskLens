@@ -1,1 +1,485 @@
-[]
+[
+  {
+    "id": "clean_1788066174",
+    "timestamp": "2026-08-30T12:02:54.543924",
+    "formatted_date": "30 Agustus 2026",
+    "formatted_time": "12:02:54",
+    "total_freed_bytes": 10381264654,
+    "total_freed_formatted": "9.67 GB",
+    "deleted_files": 40680,
+    "deleted_folders": 76,
+    "skipped_locked_files": 0,
+    "used_recycle_bin": false,
+    "items": [
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\GPUCache",
+        "size_freed": "6.55 MB",
+        "status": "success",
+        "deleted_files": 52
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 11\\Cache",
+        "size_freed": "169.51 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 11\\Code Cache",
+        "size_freed": "183.54 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 11\\GPUCache",
+        "size_freed": "5.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 13\\Cache",
+        "size_freed": "31.60 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 13\\Code Cache",
+        "size_freed": "3.46 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 13\\GPUCache",
+        "size_freed": "544.36 KB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 2\\Cache",
+        "size_freed": "299.85 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 2\\Code Cache",
+        "size_freed": "228.99 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 2\\GPUCache",
+        "size_freed": "5.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 3\\Cache",
+        "size_freed": "59.15 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 3\\Code Cache",
+        "size_freed": "74.76 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 3\\GPUCache",
+        "size_freed": "5.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 34\\Cache",
+        "size_freed": "32.82 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 34\\Code Cache",
+        "size_freed": "150.46 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 34\\GPUCache",
+        "size_freed": "1.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 38\\Cache",
+        "size_freed": "333.81 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 38\\Code Cache",
+        "size_freed": "195.83 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 38\\GPUCache",
+        "size_freed": "5.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 39\\Cache",
+        "size_freed": "315.30 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 39\\Code Cache",
+        "size_freed": "381.09 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 39\\GPUCache",
+        "size_freed": "5.82 MB",
+        "status": "success",
+        "deleted_files": 17
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 40\\Cache",
+        "size_freed": "47.87 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 40\\Code Cache",
+        "size_freed": "61.17 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 40\\GPUCache",
+        "size_freed": "5.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 41\\Cache",
+        "size_freed": "262.73 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 41\\Code Cache",
+        "size_freed": "292.49 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 41\\GPUCache",
+        "size_freed": "5.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 43\\Cache",
+        "size_freed": "118.24 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 43\\Code Cache",
+        "size_freed": "187.72 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 43\\GPUCache",
+        "size_freed": "1.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 44\\Cache",
+        "size_freed": "61.68 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 44\\Code Cache",
+        "size_freed": "10.32 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 44\\GPUCache",
+        "size_freed": "544.36 KB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 46\\Cache",
+        "size_freed": "20.35 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 46\\Code Cache",
+        "size_freed": "2.50 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 46\\GPUCache",
+        "size_freed": "1.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 48\\Cache",
+        "size_freed": "20.16 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 48\\Code Cache",
+        "size_freed": "2.57 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 48\\GPUCache",
+        "size_freed": "544.36 KB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 49\\Cache",
+        "size_freed": "255.87 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 49\\Code Cache",
+        "size_freed": "33.21 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 49\\GPUCache",
+        "size_freed": "1.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 5\\Cache",
+        "size_freed": "180.89 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 5\\Code Cache",
+        "size_freed": "109.84 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 5\\GPUCache",
+        "size_freed": "5.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 50\\Cache",
+        "size_freed": "140.42 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 50\\Code Cache",
+        "size_freed": "47.61 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 50\\GPUCache",
+        "size_freed": "544.36 KB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 51\\Cache",
+        "size_freed": "287.26 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 51\\Code Cache",
+        "size_freed": "222.56 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 51\\GPUCache",
+        "size_freed": "1.57 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 8\\Cache",
+        "size_freed": "219.76 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 8\\Code Cache",
+        "size_freed": "226.81 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 8\\GPUCache",
+        "size_freed": "6.82 MB",
+        "status": "success",
+        "deleted_files": 5
+      },
+      {
+        "name": "Profile 10.corrupted_20260723_022814",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 10.corrupted_20260723_022814",
+        "size_freed": "1.23 GB",
+        "status": "success",
+        "deleted_files": 8953
+      },
+      {
+        "name": "Profile 6.corrupted_20260723_021722",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 6.corrupted_20260723_021722",
+        "size_freed": "1.06 GB",
+        "status": "success",
+        "deleted_files": 6509
+      },
+      {
+        "name": "Profile 7.old",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 7.old",
+        "size_freed": "1.63 GB",
+        "status": "success",
+        "deleted_files": 20433
+      },
+      {
+        "name": "Profile 9.corrupted_20260723_022225",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 9.corrupted_20260723_022225",
+        "size_freed": "540.69 MB",
+        "status": "success",
+        "deleted_files": 4631
+      }
+    ]
+  },
+  {
+    "id": "clean_1788065673",
+    "timestamp": "2026-08-30T11:54:33.506932",
+    "formatted_date": "30 Agustus 2026",
+    "formatted_time": "11:54:33",
+    "total_freed_bytes": 417672760,
+    "total_freed_formatted": "398.32 MB",
+    "deleted_files": 0,
+    "deleted_folders": 6,
+    "skipped_locked_files": 1,
+    "used_recycle_bin": false,
+    "items": [
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Cache",
+        "size_freed": "0 B",
+        "status": "skipped",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Code Cache",
+        "size_freed": "363.80 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\GPUCache",
+        "size_freed": "12.10 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Microsoft\\Edge\\User Data\\Profile 1\\Cache",
+        "size_freed": "17.46 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "Code Cache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Microsoft\\Edge\\User Data\\Profile 1\\Code Cache",
+        "size_freed": "4.43 MB",
+        "status": "success",
+        "deleted_files": 0
+      },
+      {
+        "name": "GPUCache",
+        "path": "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Microsoft\\Edge\\User Data\\Profile 1\\GPUCache",
+        "size_freed": "544.36 KB",
+        "status": "success",
+        "deleted_files": 0
+      }
+    ]
+  }
+]
