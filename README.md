@@ -57,7 +57,16 @@ Aplikasi seperti **WinDirStat / TreeSize** memang bagus untuk memetakan ukuran f
 * Penanganan file yang sedang dikunci aplikasi secara aman tanpa membuat aplikasi crash.
 * Laporan langsung berapa Gigabyte ruang penyimpanan yang berhasil dipulihkan.
 
-### 4. 🎨 Antarmuka Modern (Glassmorphism Dark Mode)
+### 4. 🔍 Directory Intelligence & Inspector ("Ini Direktori Apa Sih?")
+* Mengatasi rasa cemas *"takutnya file ini masih penting"*.
+* Klik ikon **Help / Tanya** pada folder apa pun di Disk Explorer untuk mendapatkan penjelasan instan:
+  * 🏢 **Pemilik / Aplikasi Pembuat** (misal: Microsoft DirectX, Google Chrome, AMD Driver).
+  * 💡 **Fungsi Sebenarnya Folder Tersebut**.
+  * 🛡️ **Apakah Aman Dihapus?** (Level keamanan & status risiko).
+  * ⚠️ **Dampak Jika Dihapus** (efek samping jika dibersihkan).
+* Mendukung pencarian dan analisis untuk path folder kustom apa pun di komputer Anda.
+
+### 5. 🎨 Antarmuka Modern (Glassmorphism Dark Mode)
 * Dibangun dengan **React 19**, **Tailwind CSS**, dan **Lucide Icons** bertema gelap futuristik yang nyaman di mata.
 
 ---

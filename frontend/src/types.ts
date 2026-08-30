@@ -82,3 +82,17 @@ export interface CleanResult {
   used_recycle_bin: boolean;
   details: CleanDetail[];
 }
+
+export interface DirectoryExplanation {
+  title: string;
+  owner: string;
+  category: 'safe' | 'review' | 'protected';
+  safety_score: number;
+  safety_label: string;
+  summary: string;
+  purpose: string;
+  if_deleted: string;
+  recommendation: string;
+  path: string;
+  exists?: boolean;
+}

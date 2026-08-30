@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from scanner import get_drives_info, scan_directory_tree, format_size
 from advisor import get_smart_recommendations
 from cleaner import clean_selected_recommendations, delete_target_path
+from explainer import analyze_directory_purpose
 
 app = FastAPI(
     title="DiskLens API",
@@ -32,6 +33,18 @@ class CleanRequest(BaseModel):
 
 class OpenFolderRequest(BaseModel):
     path: str
+
+class ExplainPathRequest(BaseModel):
+    path: str
+
+@app.post("/api/explain-path")
+def explain_path(req: ExplainPathRequest):
+    """Explain purpose, owner, safety score, and impact of deleting any directory."""
+    try:
+        explanation = analyze_directory_purpose(req.path)
+        return explanation
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/drives")
 def get_drives():

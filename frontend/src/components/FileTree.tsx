@@ -13,7 +13,9 @@ import {
   FileVideo,
   FileAudio,
   FileArchive,
-  FileText
+  FileText,
+  HelpCircle,
+  Sparkles
 } from 'lucide-react';
 import { FileNode } from '../types';
 
@@ -22,6 +24,7 @@ interface FileTreeProps {
   isLoading: boolean;
   onNavigate: (path: string) => void;
   onOpenExplorer: (path: string) => void;
+  onExplainPath: (path: string) => void;
   currentPath: string;
 }
 
@@ -50,6 +53,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
   isLoading,
   onNavigate,
   onOpenExplorer,
+  onExplainPath,
   currentPath
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -102,6 +106,15 @@ export const FileTree: React.FC<FileTreeProps> = ({
             title="Open in Windows File Explorer"
           >
             <ExternalLink className="w-4 h-4" />
+          </button>
+
+          <button
+            onClick={() => onExplainPath(currentPath)}
+            className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-indigo-600/20 border border-indigo-500/40 text-indigo-300 hover:bg-indigo-600/30 text-xs font-semibold transition"
+            title="Tanya: Ini direktori apa sih & apa fungsinya?"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span className="hidden sm:inline">Info Direktori Ini</span>
           </button>
         </div>
 
@@ -190,10 +203,21 @@ export const FileTree: React.FC<FileTreeProps> = ({
                     </div>
 
                     {/* Right: Formatted Size & Action */}
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-2">
                       <span className="text-sm font-semibold font-mono text-slate-100 min-w-[70px] text-right">
                         {item.size_formatted}
                       </span>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onExplainPath(item.path);
+                        }}
+                        className="p-1.5 rounded-lg opacity-80 group-hover:opacity-100 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-600/20 transition"
+                        title="Tanya: Ini direktori apa & fungsinya apa?"
+                      >
+                        <HelpCircle className="w-3.5 h-3.5" />
+                      </button>
 
                       <button
                         onClick={(e) => {

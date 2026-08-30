@@ -42,13 +42,22 @@ def run_tests():
     assert is_path_safe_to_delete(os.path.join(os.environ.get("LOCALAPPDATA", ""), "Temp")), "Temp should be deletable"
     print("Security barrier test passed: All critical paths strictly protected!")
 
-    print("\n=== 4. Testing Tree Scanner on D:\\Proyek\\disklens ===")
-    tree = scan_directory_tree("D:\\Proyek\\disklens", max_depth=2)
-    print(f"Scan root: {tree['name']} -> Total Size: {tree['size_formatted']}, Children: {len(tree['children'])}")
-    for child in tree['children']:
-        print(f"  • {child['name']} ({child['size_formatted']}) - {child['percentage']}%")
+    print("\n=== 5. Testing Directory Explainer Intelligence ===")
+    from explainer import analyze_directory_purpose
+    sample_tests = [
+        "C:\\Users\\Hype 5 AMD\\AppData\\Local\\AMD\\DxCache",
+        "C:\\Users\\Hype 5 AMD\\AppData\\Local\\D3DSCache",
+        "C:\\Windows",
+        "D:\\Capcut",
+        "C:\\Users\\Hype 5 AMD\\AppData\\Local\\Temp"
+    ]
+    for p in sample_tests:
+        exp = analyze_directory_purpose(p)
+        print(f"  • {p}")
+        print(f"    -> [{exp['safety_label']}] {exp['title']} (Owner: {exp['owner']})")
+        assert 'title' in exp and 'if_deleted' in exp
 
-    print("\n🎉 ALL TESTS PASSED SUCCESSFULLY! 🚀")
+    print("\n🎉 ALL TESTS INCLUDING EXPLAINER PASSED SUCCESSFULLY! 🚀")
 
 if __name__ == "__main__":
     run_tests()

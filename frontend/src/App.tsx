@@ -4,7 +4,8 @@ import { DriveStats } from './components/DriveStats';
 import { FileTree } from './components/FileTree';
 import { SmartAdvisor } from './components/SmartAdvisor';
 import { CleanModal } from './components/CleanModal';
-import { DriveInfo, FileNode, AdvisorData, RecommendationItem, CleanResult } from './types';
+import { DirectoryExplainerModal } from './components/DirectoryExplainerModal';
+import { DriveInfo, FileNode, AdvisorData, RecommendationItem, CleanResult, DirectoryExplanation } from './types';
 
 export function App() {
   const [drives, setDrives] = useState<DriveInfo[]>([]);
@@ -16,6 +17,11 @@ export function App() {
   const [advisorData, setAdvisorData] = useState<AdvisorData | null>(null);
   const [currentScanPath, setCurrentScanPath] = useState<string>('C:\\');
   
+  // Explainer State
+  const [isExplainerOpen, setIsExplainerOpen] = useState<boolean>(false);
+  const [currentExplanation, setCurrentExplanation] = useState<DirectoryExplanation | null>(null);
+  const [isLoadingExplanation, setIsLoadingExplanation] = useState<boolean>(false);
+
   // Loading States
   const [isLoadingDrives, setIsLoadingDrives] = useState<boolean>(true);
   const [isLoadingTree, setIsLoadingTree] = useState<boolean>(false);
@@ -102,6 +108,26 @@ export function App() {
     }
   };
 
+  // Handle explain path intelligence
+  const handleExplainPath = async (path: string) => {
+    setIsExplainerOpen(true);
+    setIsLoadingExplanation(true);
+    setCurrentExplanation(null);
+    try {
+      const res = await fetch('/api/explain-path', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path })
+      });
+      const data = await res.json();
+      setCurrentExplanation(data);
+    } catch (err) {
+      console.error("Failed to fetch path explanation:", err);
+    } finally {
+      setIsLoadingExplanation(false);
+    }
+  };
+
   // Handle Clean Execution
   const handleConfirmClean = async (paths: string[], useRecycleBin: boolean): Promise<CleanResult | null> => {
     try {
@@ -172,6 +198,7 @@ export function App() {
             currentPath={currentScanPath}
             onNavigate={(path) => fetchTree(path)}
             onOpenExplorer={handleOpenExplorer}
+            onExplainPath={handleExplainPath}
           />
         )}
 
@@ -184,6 +211,16 @@ export function App() {
         itemsToClean={itemsToClean}
         onConfirmClean={handleConfirmClean}
         onCleanupCompleted={handleRefresh}
+      />
+
+      {/* Directory Intelligence / Explainer Modal */}
+      <DirectoryExplainerModal
+        isOpen={isExplainerOpen}
+        onClose={() => setIsExplainerOpen(false)}
+        explanation={currentExplanation}
+        isLoading={isLoadingExplanation}
+        onOpenExplorer={handleOpenExplorer}
+        onQueryNewPath={handleExplainPath}
       />
 
       {/* Minimal Footer */}
