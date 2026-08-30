@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Trash2, 
   CheckCircle2, 
-  Loader2, 
   FolderSync,
   AlertTriangle,
   Sparkles,
-  RefreshCw
+  RefreshCw,
+  HardDrive,
+  Check
 } from 'lucide-react';
 import { RecommendationItem, CleanResult } from '../types';
 
@@ -29,14 +30,42 @@ export const CleanModal: React.FC<CleanModalProps> = ({
   // Default to permanent false = instant space recovery
   const [useRecycleBin, setUseRecycleBin] = useState(false);
   const [isCleaning, setIsCleaning] = useState(false);
+  const [cleanProgress, setCleanProgress] = useState(0);
+  const [cleanStageText, setCleanStageText] = useState('Menyiapkan proses pembersihan...');
+  
   const [isEmptyingBin, setIsEmptyingBin] = useState(false);
   const [binEmptiedMessage, setBinEmptiedMessage] = useState<string | null>(null);
   const [result, setResult] = useState<CleanResult | null>(null);
 
-  if (!isOpen) return null;
-
   const totalBytes = itemsToClean.reduce((acc, item) => acc + item.total_bytes, 0);
   const allPaths = itemsToClean.flatMap(item => item.paths);
+
+  // Animated progress bar during cleaning
+  useEffect(() => {
+    if (isCleaning) {
+      setCleanProgress(15);
+      setCleanStageText('Memeriksa izin akses file & mendeteksi cache...');
+      
+      const t1 = setTimeout(() => {
+        setCleanProgress(45);
+        setCleanStageText(`Menghapus direktori sampah & cache (${allPaths.length} target)...`);
+      }, 400);
+
+      const t2 = setTimeout(() => {
+        setCleanProgress(85);
+        setCleanStageText('Menghitung ruang yang berhasil dipulihkan & mencatat riwayat...');
+      }, 1000);
+
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+      };
+    } else {
+      setCleanProgress(0);
+    }
+  }, [isCleaning, allPaths.length]);
+
+  if (!isOpen) return null;
 
   const formatSize = (bytes: number) => {
     if (bytes < 1024 * 1024 * 1024) {
@@ -49,6 +78,8 @@ export const CleanModal: React.FC<CleanModalProps> = ({
     setIsCleaning(true);
     try {
       const res = await onConfirmClean(allPaths, useRecycleBin);
+      setCleanProgress(100);
+      setCleanStageText('Pembersihan selesai!');
       setResult(res);
     } catch (e) {
       console.error(e);
@@ -61,7 +92,7 @@ export const CleanModal: React.FC<CleanModalProps> = ({
     setIsEmptyingBin(true);
     try {
       await fetch('/api/empty-recycle-bin', { method: 'POST' });
-      setBinEmptiedMessage("Recycle Bin berhasil dikosongkan!");
+      setBinEmptiedMessage("✅ Recycle Bin berhasil dikosongkan! Kapasitas disk fisik bertambah.");
       onCleanupCompleted();
     } catch (e) {
       console.error(e);
@@ -89,10 +120,14 @@ export const CleanModal: React.FC<CleanModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-bold text-white">
-                {result ? 'Pembersihan Selesai' : 'Konfirmasi Pembersihan Ruang'}
+                {result ? 'Pembersihan Selesai' : isCleaning ? 'Sedang Memproses Pembersihan' : 'Konfirmasi Pembersihan Ruang'}
               </h3>
               <p className="text-xs text-slate-400">
-                {result ? 'Laporan hasil pemulihan disk' : `${itemsToClean.length} kategori sampah dipilih`}
+                {result 
+                  ? 'Laporan hasil pemulihan disk & status Recycle Bin' 
+                  : isCleaning 
+                  ? 'Mohon tunggu, proses penghapusan sedang berlangsung...'
+                  : `${itemsToClean.length} kategori sampah dipilih`}
               </p>
             </div>
           </div>
@@ -111,7 +146,7 @@ export const CleanModal: React.FC<CleanModalProps> = ({
         <div className="p-6 space-y-5">
           {result ? (
             /* Result Screen */
-            <div className="text-center space-y-4 py-3">
+            <div className="text-center space-y-4 py-2">
               <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto animate-bounce">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
@@ -120,56 +155,112 @@ export const CleanModal: React.FC<CleanModalProps> = ({
                 <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
                   Ruang Penyimpanan Berhasil Dipulihkan
                 </span>
-                <span className="text-3xl font-black text-emerald-400 mt-1 block">
+                <span className="text-3xl font-black text-emerald-400 mt-1 block font-mono">
                   +{result.total_freed_formatted}
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto text-left pt-2">
+              <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto text-left pt-1">
                 <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                  <span className="text-[10px] text-slate-400 block">File Dihapus</span>
-                  <span className="text-sm font-bold text-slate-200">{result.total_deleted_files} file</span>
+                  <span className="text-[10px] text-slate-400 block">File & Folder Dihapus</span>
+                  <span className="text-sm font-bold text-slate-200">{result.total_deleted_files} item</span>
                 </div>
                 <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                  <span className="text-[10px] text-slate-400 block">Metode</span>
+                  <span className="text-[10px] text-slate-400 block">Metode Penghapusan</span>
                   <span className="text-sm font-bold text-indigo-400">
                     {result.used_recycle_bin ? 'Recycle Bin' : 'Permanen (Langsung Lega)'}
                   </span>
                 </div>
               </div>
 
-              {result.total_skipped_locked_files > 0 && (
-                <div className="bg-amber-950/30 border border-amber-500/30 rounded-xl p-3 text-left flex items-start space-x-2 text-xs text-amber-300">
-                  <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-400" />
-                  <span>
-                    <strong>Catatan:</strong> Terdapat {result.total_skipped_locked_files} file cache yang sedang dikunci oleh aplikasi aktif (seperti Chrome/Edge). Tutup aplikasi tersebut lalu klik bersihkan lagi untuk menghapus sisanya.
-                  </span>
-                </div>
-              )}
+              {/* Recycle Bin Explanation & Quick Empty Action */}
+              {result.used_recycle_bin ? (
+                <div className="bg-amber-950/40 border border-amber-500/40 rounded-2xl p-4 text-left space-y-3">
+                  <div className="flex items-start space-x-2.5">
+                    <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs font-bold text-amber-300">Kapasitas Belum Terlihat Bertambah?</h4>
+                      <p className="text-[11px] text-slate-300 mt-1 leading-relaxed">
+                        Anda menggunakan opsi <strong>Recycle Bin</strong>. Di Windows, file masih tersimpan di folder tempat sampah. Ruang disk fisik Anda baru akan lega secara penuh setelah Recycle Bin dikosongkan.
+                      </p>
+                    </div>
+                  </div>
 
-              {result.used_recycle_bin && (
-                <div className="pt-2">
                   <button
                     onClick={handleEmptyRecycleBin}
                     disabled={isEmptyingBin}
-                    className="inline-flex items-center space-x-2 px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 rounded-xl transition"
+                    className="w-full py-2 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${isEmptyingBin ? 'animate-spin' : ''}`} />
                     <span>{binEmptiedMessage || 'Kosongkan Recycle Bin Sekarang (+ Lega)'}</span>
                   </button>
                 </div>
+              ) : (
+                <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-2xl p-3.5 text-left flex items-start space-x-2.5">
+                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <span className="text-xs text-emerald-300">
+                    <strong>Kapasitas Langsung Bertambah:</strong> File sampah telah dihapus secara permanen dari drive tanpa tertahan di Recycle Bin.
+                  </span>
+                </div>
+              )}
+
+              {/* Locked files disclaimer */}
+              {result.total_skipped_locked_files > 0 && (
+                <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3 text-left flex items-start space-x-2 text-xs text-slate-400">
+                  <Sparkles className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-400" />
+                  <span>
+                    <strong>Catatan:</strong> Terdapat {result.total_skipped_locked_files} file cache yang sedang dikunci oleh browser aktif (seperti Chrome/Edge). Tutup browser tersebut lalu bersihkan lagi untuk menghapus sisanya.
+                  </span>
+                </div>
               )}
             </div>
           ) : isCleaning ? (
-            /* Loading Screen */
-            <div className="py-12 text-center space-y-4">
-              <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mx-auto" />
-              <div>
-                <p className="text-sm font-bold text-white">Sedang membersihkan file sampah...</p>
-                <p className="text-xs text-slate-400 mt-1">
-                  Menghapus file cache, shader, dan data sementara...
+            /* Live Progress & Loading Screen */
+            <div className="py-8 px-2 space-y-6 text-center">
+              
+              {/* Animated Radar Pulse */}
+              <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-indigo-500/20 animate-ping" />
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-xl shadow-indigo-500/30 relative z-10">
+                  <HardDrive className="w-8 h-8 animate-pulse" />
+                </div>
+              </div>
+
+              {/* Live Stage Info */}
+              <div className="space-y-2">
+                <h4 className="text-base font-bold text-white">
+                  Sedang Membersihkan Storage...
+                </h4>
+                <p className="text-xs text-indigo-300 font-medium">
+                  {cleanStageText}
                 </p>
               </div>
+
+              {/* Animated Progress Bar */}
+              <div className="space-y-1.5 max-w-sm mx-auto">
+                <div className="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800 p-0.5">
+                  <div 
+                    className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400 rounded-full transition-all duration-500"
+                    style={{ width: `${cleanProgress}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+                  <span>Memproses berkas</span>
+                  <span>{cleanProgress}%</span>
+                </div>
+              </div>
+
+              {/* Real-time Loading Awareness Note */}
+              <div className="bg-slate-900/80 rounded-xl p-3 border border-slate-800/80 text-[11px] text-slate-400 max-w-sm mx-auto text-left flex items-start space-x-2">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+                <span>
+                  {useRecycleBin 
+                    ? "Opsi Recycle Bin aktif: File akan dipindahkan ke tempat sampah sebelum dikosongkan."
+                    : "Opsi Permanen aktif: Ruang disk C Anda akan langsung bertambah seketika setelah bar selesai."
+                  }
+                </span>
+              </div>
+
             </div>
           ) : (
             /* Selection & Options Confirmation */
@@ -183,7 +274,7 @@ export const CleanModal: React.FC<CleanModalProps> = ({
               </div>
 
               {/* Selected items breakdown preview */}
-              <div className="bg-slate-900/90 rounded-2xl border border-slate-800 p-4 max-h-40 overflow-y-auto space-y-2">
+              <div className="bg-slate-900/90 rounded-2xl border border-slate-800 p-4 max-h-36 overflow-y-auto space-y-2">
                 {itemsToClean.map(item => (
                   <div key={item.id} className="flex items-center justify-between text-xs py-1 border-b border-slate-800/50 last:border-0">
                     <span className="text-slate-300 font-medium truncate max-w-[280px]">{item.title}</span>
@@ -249,7 +340,7 @@ export const CleanModal: React.FC<CleanModalProps> = ({
               onClick={handleFinish}
               className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition"
             >
-              Selesai & Perbarui Data
+              Selesai & Perbarui Tampilan
             </button>
           ) : !isCleaning && (
             <>
