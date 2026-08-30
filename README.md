@@ -85,39 +85,47 @@ graph TD
 
 ---
 
-## 🚀 Cara Instalasi & Menjalankan
+## 🚀 Cara Instalasi & Menjalankan (Quick Start)
 
-### Persyaratan Sistem:
-- **Windows 10 / 11**
-- **Python 3.10+**
-- **Node.js 18+**
+Siapa pun dapat langsung mencoba DiskLens di komputer mereka hanya dengan 3 langkah mudah:
 
-### Langkah Cepat (One-Click Launcher):
-Cukup klik dua kali file **`start.bat`** di direktori utama, aplikasi akan otomatis menginstall dependensi, membangun frontend, dan membuka browser di `http://127.0.0.1:8000`.
+### 1. Clone Repositori Ini:
+```bash
+git clone https://github.com/Asharuu/disklens.git
+cd disklens
+```
 
-### Menjalankan Secara Manual:
+---
 
-#### 1. Setup Backend:
+### 2. Jalankan Aplikasi:
+
+#### 🌟 Opsi A: Sekali Klik (Paling Mudah — Windows One-Click Launcher)
+Cukup jalankan file **`start.bat`** (bisa diklik dua kali lewat File Explorer atau via terminal):
+```powershell
+.\start.bat
+```
+> ⚡ *Skrip ini akan otomatis memeriksa dependensi Python, mem-build frontend modern, dan membuka browser Anda di `http://127.0.0.1:8000` secara otomatis.*
+
+---
+
+#### 💻 Opsi B: Menjalankan Secara Manual (Developer Mode)
+
+**1. Install & Jalankan Backend:**
 ```bash
 cd backend
 pip install -r requirements.txt
 python main.py
 ```
 
-#### 2. Setup Frontend (Mode Pengembang):
+**2. Jalankan Frontend UI:**
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Buka browser di `http://localhost:5173`.
+Buka browser Anda di `http://localhost:5173`.
 
-#### 3. Build Frontend untuk Produksi:
-```bash
-cd frontend
-npm run build
-```
-Setelah di-build, jalankan `python backend/main.py` dan akses di `http://127.0.0.1:8000`.
+---
 
 ---
 
