@@ -66,7 +66,16 @@ Aplikasi seperti **WinDirStat / TreeSize** memang bagus untuk memetakan ukuran f
   * ⚠️ **Dampak Jika Dihapus** (efek samping jika dibersihkan).
 * Mendukung pencarian dan analisis untuk path folder kustom apa pun di komputer Anda.
 
-### 5. 🎨 Antarmuka Modern (Glassmorphism Dark Mode)
+### 5. 🕒 Cleanup History (Riwayat Pembersihan Terperinci)
+* Mencatat setiap aksi pembersihan secara otomatis dan persisten.
+* Menampilkan **nama file/direktori**, **tanggal**, **waktu (WIB)**, **kapasitas yang dipulihkan**, dan **metode penghapusan**.
+* Kartu ringkasan statistik akumulatif: *Total Ruang Dipulihkan Sejauh Ini*, *Total Sesi*, dan *Total File Dihapus*.
+
+### 6. 🎨 Custom High-Tech Icon & Windows Desktop Shortcut
+* Ikon resmi DiskLens bertema *cyber-lens futuristic* untuk tab browser (Favicon SVG/ICO) dan aplikasi Windows.
+* Otomatis membuat pintasan **`DiskLens.lnk`** di Desktop pengguna untuk akses sekali klik.
+
+### 7. 💻 Antarmuka Modern (Glassmorphism Dark Mode)
 * Dibangun dengan **React 19**, **Tailwind CSS**, dan **Lucide Icons** bertema gelap futuristik yang nyaman di mata.
 
 ---

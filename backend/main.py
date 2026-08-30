@@ -11,6 +11,7 @@ from scanner import get_drives_info, scan_directory_tree, format_size
 from advisor import get_smart_recommendations
 from cleaner import clean_selected_recommendations, delete_target_path, empty_windows_recycle_bin
 from explainer import analyze_directory_purpose
+from history import record_cleanup_session, load_history, clear_all_history
 
 app = FastAPI(
     title="DiskLens API",
@@ -75,12 +76,46 @@ def get_recommendations(drive: str = Query("C", description="Drive letter to ana
 
 @app.post("/api/clean")
 def clean_items(req: CleanRequest):
-    """Safely delete selected paths with Recycle Bin support."""
+    """Safely delete selected paths with Recycle Bin support and record history."""
     if not req.paths:
         raise HTTPException(status_code=400, detail="No paths provided for cleaning.")
     
     result = clean_selected_recommendations(req.paths, use_recycle_bin=req.use_recycle_bin)
+    
+    # Record cleanup session into history
+    if result.get("total_bytes_freed", 0) > 0 or result.get("total_deleted_files", 0) > 0:
+        record_cleanup_session(
+            cleaned_paths=req.paths,
+            total_freed_bytes=result["total_bytes_freed"],
+            total_freed_formatted=result["total_freed_formatted"],
+            deleted_files=result["total_deleted_files"],
+            deleted_folders=result["total_deleted_folders"],
+            skipped_count=result["total_skipped_locked_files"],
+            used_recycle_bin=req.use_recycle_bin,
+            details=result.get("details", [])
+        )
+        
     return result
+
+@app.get("/api/history")
+def get_cleanup_history():
+    """Retrieve all past cleanup history logs and all-time reclaimed stats."""
+    history = load_history()
+    total_all_time = sum(item.get("total_freed_bytes", 0) for item in history)
+    total_files = sum(item.get("deleted_files", 0) for item in history)
+    return {
+        "history": history,
+        "total_all_time_bytes": total_all_time,
+        "total_all_time_formatted": format_size(total_all_time),
+        "total_files_cleaned": total_files,
+        "total_sessions": len(history)
+    }
+
+@app.delete("/api/history")
+def delete_cleanup_history():
+    """Clear all past cleanup logs."""
+    clear_all_history()
+    return {"status": "cleared", "message": "History has been reset."}
 
 @app.post("/api/empty-recycle-bin")
 def empty_recycle_bin_route():

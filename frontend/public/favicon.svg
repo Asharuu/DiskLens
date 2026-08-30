@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="50%" stop-color="#312e81" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="116" fill="url(#bgGrad)" stroke="url(#ringGrad)" stroke-width="8" />
+  <!-- Donut Chart -->
+  <path d="M 128 48 A 80 80 0 1 1 58 168 L 86 152 A 48 48 0 1 0 128 80 Z" fill="#6366f1" />
+  <path d="M 58 168 A 80 80 0 0 1 128 48 L 128 80 A 48 48 0 0 0 86 152 Z" fill="#10b981" />
+  <!-- Core -->
+  <circle cx="128" cy="128" r="24" fill="#0f172a" stroke="#818cf8" stroke-width="4" />
+  <circle cx="128" cy="128" r="10" fill="#f59e0b" />
+  <!-- Lens Glass Handle -->
+  <line x1="184" y1="184" x2="232" y2="232" stroke="#818cf8" stroke-width="16" stroke-linecap="round" />
+</svg>

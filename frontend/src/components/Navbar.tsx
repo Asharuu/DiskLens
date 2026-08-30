@@ -1,5 +1,5 @@
 import React from 'react';
-import { HardDrive, Sparkles, FolderTree, RefreshCw, Github, ShieldAlert } from 'lucide-react';
+import { HardDrive, Sparkles, FolderTree, RefreshCw, Github, ShieldAlert, History } from 'lucide-react';
 import { DriveInfo, AdvisorData } from '../types';
 
 interface NavbarProps {
@@ -9,8 +9,10 @@ interface NavbarProps {
   activeTab: 'advisor' | 'explorer';
   onSelectTab: (tab: 'advisor' | 'explorer') => void;
   onRefresh: () => void;
+  onOpenHistory: () => void;
   isLoading: boolean;
   advisorData: AdvisorData | null;
+  historyCount?: number;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -20,8 +22,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   onSelectTab,
   onRefresh,
+  onOpenHistory,
   isLoading,
   advisorData,
+  historyCount = 0
 }) => {
   return (
     <header className="border-b border-slate-800/80 bg-[#0d1527]/80 backdrop-blur-md sticky top-0 z-30">
@@ -103,6 +107,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               })}
             </div>
 
+            {/* History Button */}
+            <button
+              onClick={onOpenHistory}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-indigo-500/40 text-xs font-semibold transition"
+              title="Lihat Riwayat Pembersihan"
+            >
+              <History className="w-3.5 h-3.5 text-indigo-400" />
+              <span className="hidden sm:inline">Riwayat</span>
+              {historyCount > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full bg-indigo-500/20 text-[10px] font-bold text-indigo-300">
+                  {historyCount}
+                </span>
+              )}
+            </button>
+
             {/* Refresh Button */}
             <button
               onClick={onRefresh}
@@ -115,13 +134,13 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* GitHub Link */}
             <a
-              href="https://github.com"
+              href="https://github.com/Asharuu/DiskLens"
               target="_blank"
               rel="noreferrer"
               className="hidden sm:flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 text-xs transition"
             >
               <Github className="w-4 h-4" />
-              <span>Open Source</span>
+              <span>GitHub</span>
             </a>
           </div>
 

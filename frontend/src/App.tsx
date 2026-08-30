@@ -5,7 +5,8 @@ import { FileTree } from './components/FileTree';
 import { SmartAdvisor } from './components/SmartAdvisor';
 import { CleanModal } from './components/CleanModal';
 import { DirectoryExplainerModal } from './components/DirectoryExplainerModal';
-import { DriveInfo, FileNode, AdvisorData, RecommendationItem, CleanResult, DirectoryExplanation } from './types';
+import { HistoryModal } from './components/HistoryModal';
+import { DriveInfo, FileNode, AdvisorData, RecommendationItem, CleanResult, DirectoryExplanation, HistoryData } from './types';
 
 export function App() {
   const [drives, setDrives] = useState<DriveInfo[]>([]);
@@ -15,12 +16,17 @@ export function App() {
   // Data States
   const [treeData, setTreeData] = useState<FileNode | null>(null);
   const [advisorData, setAdvisorData] = useState<AdvisorData | null>(null);
+  const [historyData, setHistoryData] = useState<HistoryData | null>(null);
   const [currentScanPath, setCurrentScanPath] = useState<string>('C:\\');
   
   // Explainer State
   const [isExplainerOpen, setIsExplainerOpen] = useState<boolean>(false);
   const [currentExplanation, setCurrentExplanation] = useState<DirectoryExplanation | null>(null);
   const [isLoadingExplanation, setIsLoadingExplanation] = useState<boolean>(false);
+
+  // History State
+  const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false);
 
   // Loading States
   const [isLoadingDrives, setIsLoadingDrives] = useState<boolean>(true);
@@ -128,6 +134,35 @@ export function App() {
     }
   };
 
+  // Fetch history
+  const fetchHistory = useCallback(async () => {
+    setIsLoadingHistory(true);
+    try {
+      const res = await fetch('/api/history');
+      const data = await res.json();
+      setHistoryData(data);
+    } catch (err) {
+      console.error("Failed to fetch history:", err);
+    } finally {
+      setIsLoadingHistory(false);
+    }
+  }, []);
+
+  const handleClearHistory = async () => {
+    try {
+      await fetch('/api/history', { method: 'DELETE' });
+      await fetchHistory();
+    } catch (err) {
+      console.error("Failed to clear history:", err);
+    }
+  };
+
+  // Initial load
+  useEffect(() => {
+    fetchDrives();
+    fetchHistory();
+  }, [fetchDrives, fetchHistory]);
+
   // Handle Clean Execution
   const handleConfirmClean = async (paths: string[], useRecycleBin: boolean): Promise<CleanResult | null> => {
     try {
@@ -137,6 +172,7 @@ export function App() {
         body: JSON.stringify({ paths, use_recycle_bin: useRecycleBin })
       });
       const data = await res.json();
+      fetchHistory(); // Refresh history immediately
       return data;
     } catch (err) {
       console.error("Clean error:", err);
@@ -147,6 +183,7 @@ export function App() {
   // Refresh all data
   const handleRefresh = () => {
     fetchDrives();
+    fetchHistory();
     if (selectedDrive) {
       fetchAdvisor(selectedDrive);
       fetchTree(currentScanPath);
@@ -166,6 +203,8 @@ export function App() {
         activeTab={activeTab}
         onSelectTab={(tab) => setActiveTab(tab)}
         onRefresh={handleRefresh}
+        onOpenHistory={() => setIsHistoryOpen(true)}
+        historyCount={historyData?.history.length || 0}
         isLoading={isLoadingDrives || isLoadingTree || isLoadingAdvisor}
         advisorData={advisorData}
       />
@@ -222,6 +261,16 @@ export function App() {
         isLoading={isLoadingExplanation}
         onOpenExplorer={handleOpenExplorer}
         onQueryNewPath={handleExplainPath}
+      />
+
+      {/* Cleanup History Modal */}
+      <HistoryModal
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        historyData={historyData}
+        isLoading={isLoadingHistory}
+        onClearHistory={handleClearHistory}
+        onOpenExplorer={handleOpenExplorer}
       />
 
       {/* Minimal Footer */}

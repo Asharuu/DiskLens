@@ -9,10 +9,11 @@ echo.
 
 cd /d "%~dp0"
 
-echo [1/3] Memeriksa dependensi backend...
+echo [1/3] Memeriksa dependensi backend & shortcut desktop...
 python -m pip install -r backend/requirements.txt --quiet --disable-pip-version-check
+python create_desktop_shortcut.py >nul 2>&1
 
-echo [2/3] Membangun frontend UI modern (React + Vite)...
+echo [2/3] Memeriksa frontend UI modern (React + Vite)...
 if not exist "frontend\dist" (
     cd frontend
     call npm install --quiet

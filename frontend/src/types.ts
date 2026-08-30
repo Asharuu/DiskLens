@@ -96,3 +96,33 @@ export interface DirectoryExplanation {
   path: string;
   exists?: boolean;
 }
+
+export interface HistoryItem {
+  name: string;
+  path: string;
+  size_freed: string;
+  status: string;
+  deleted_files: number;
+}
+
+export interface HistoryEntry {
+  id: string;
+  timestamp: string;
+  formatted_date: string;
+  formatted_time: string;
+  total_freed_bytes: number;
+  total_freed_formatted: string;
+  deleted_files: number;
+  deleted_folders: number;
+  skipped_locked_files: number;
+  used_recycle_bin: boolean;
+  items: HistoryItem[];
+}
+
+export interface HistoryData {
+  history: HistoryEntry[];
+  total_all_time_bytes: number;
+  total_all_time_formatted: string;
+  total_files_cleaned: number;
+  total_sessions: number;
+}
