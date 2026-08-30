@@ -1,7 +1,8 @@
 import os
 import shutil
+import ctypes
 from typing import List, Dict, Any
-from scanner import format_size
+from scanner import format_size, calculate_folder_size_fast
 
 try:
     from send2trash import send2trash
@@ -43,10 +44,21 @@ def is_path_safe_to_delete(target_path: str) -> bool:
         
     return True
 
+def empty_windows_recycle_bin() -> Dict[str, Any]:
+    """
+    Empties the Windows Recycle Bin on all drives immediately using Shell32 API.
+    Flags: SHERB_NOCONFIRMATION (1) | SHERB_NOPROGRESSUI (2) | SHERB_NOSOUND (4) = 7
+    """
+    try:
+        res = ctypes.windll.shell32.SHEmptyRecycleBinW(None, None, 7)
+        return {"status": "success" if res == 0 else "info", "code": res}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
+
 def delete_target_path(target_path: str, use_recycle_bin: bool = True) -> Dict[str, Any]:
     """
-    Safely deletes a single file or folder (or contents of a folder),
-    optionally sending it to the Windows Recycle Bin.
+    Safely and rapidly deletes a file or directory.
+    Uses atomic directory deletion with graceful fallback for locked files.
     """
     target_path = os.path.abspath(target_path)
     
@@ -67,74 +79,85 @@ def delete_target_path(target_path: str, use_recycle_bin: bool = True) -> Dict[s
     skipped_count = 0
     errors = []
 
+    # Calculate initial size
+    initial_size = calculate_folder_size_fast(target_path, max_depth=6) if os.path.isdir(target_path) else os.path.getsize(target_path)
+
+    # 1. Single File Deletion
     if os.path.isfile(target_path):
         try:
-            f_size = os.path.getsize(target_path)
             if use_recycle_bin and HAS_SEND2TRASH:
                 send2trash(target_path)
             else:
                 os.remove(target_path)
-            bytes_freed += f_size
-            deleted_files += 1
+            bytes_freed = initial_size
+            deleted_files = 1
         except Exception as e:
-            skipped_count += 1
-            errors.append(f"Failed to delete {target_path}: {str(e)}")
-    elif os.path.isdir(target_path):
-        # Delete contents inside or folder itself
-        # For cache directories, deleting items inside is usually best
-        try:
-            for root, dirs, files in os.walk(target_path, topdown=False):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    try:
-                        f_size = os.path.getsize(file_path)
-                        if use_recycle_bin and HAS_SEND2TRASH:
-                            send2trash(file_path)
-                        else:
-                            os.remove(file_path)
-                        bytes_freed += f_size
-                        deleted_files += 1
-                    except Exception:
-                        skipped_count += 1
-                        
-                for d in dirs:
-                    dir_path = os.path.join(root, d)
-                    try:
-                        if use_recycle_bin and HAS_SEND2TRASH:
-                            send2trash(dir_path)
-                        else:
-                            os.rmdir(dir_path)
-                        deleted_folders += 1
-                    except Exception:
-                        skipped_count += 1
+            skipped_count = 1
+            errors.append(f"File locked or permission denied: {str(e)}")
 
-            # Try deleting the parent folder itself if not Temp/root
-            if not target_path.lower().endswith("temp"):
-                try:
-                    if use_recycle_bin and HAS_SEND2TRASH:
-                        send2trash(target_path)
-                    else:
-                        os.rmdir(target_path)
-                    deleted_folders += 1
-                except Exception:
-                    pass
-        except Exception as e:
-            errors.append(f"Error traversing directory {target_path}: {str(e)}")
+    # 2. Directory Deletion
+    elif os.path.isdir(target_path):
+        # A. Try Fast Atomic Deletion First (Entire folder at once)
+        # Note: Do not delete %TEMP% parent itself, only contents
+        is_temp_root = target_path.lower().endswith("\\temp")
+        deleted_atomically = False
+
+        if not is_temp_root:
+            try:
+                if use_recycle_bin and HAS_SEND2TRASH:
+                    send2trash(target_path)
+                else:
+                    shutil.rmtree(target_path)
+                bytes_freed = initial_size
+                deleted_folders = 1
+                deleted_atomically = True
+            except Exception:
+                deleted_atomically = False
+
+        # B. Fallback: If atomic deletion failed (e.g. locked files inside), delete unlocked files item-by-item
+        if not deleted_atomically:
+            try:
+                with os.scandir(target_path) as it:
+                    for entry in it:
+                        try:
+                            if entry.is_file(follow_symlinks=False):
+                                f_size = entry.stat(follow_symlinks=False).st_size
+                                if use_recycle_bin and HAS_SEND2TRASH:
+                                    send2trash(entry.path)
+                                else:
+                                    os.remove(entry.path)
+                                bytes_freed += f_size
+                                deleted_files += 1
+                            elif entry.is_dir(follow_symlinks=False):
+                                d_size = calculate_folder_size_fast(entry.path, max_depth=5)
+                                try:
+                                    if use_recycle_bin and HAS_SEND2TRASH:
+                                        send2trash(entry.path)
+                                    else:
+                                        shutil.rmtree(entry.path)
+                                    bytes_freed += d_size
+                                    deleted_folders += 1
+                                except Exception:
+                                    skipped_count += 1
+                        except Exception:
+                            skipped_count += 1
+            except Exception as e:
+                errors.append(f"Error scanning directory {target_path}: {str(e)}")
 
     return {
-        "status": "success" if bytes_freed > 0 or skipped_count == 0 else "partial",
+        "status": "success" if bytes_freed > 0 else "skipped" if skipped_count > 0 else "empty",
         "path": target_path,
         "bytes_freed": bytes_freed,
         "bytes_freed_formatted": format_size(bytes_freed),
         "deleted_files": deleted_files,
         "deleted_folders": deleted_folders,
         "skipped_locked_items": skipped_count,
-        "errors": errors[:5]
+        "errors": errors[:3]
     }
 
 def clean_selected_recommendations(paths: List[str], use_recycle_bin: bool = True) -> Dict[str, Any]:
     """
-    Cleans multiple paths selected from the recommendations list.
+    Cleans multiple paths selected from the recommendations list rapidly.
     """
     total_freed = 0
     total_files = 0

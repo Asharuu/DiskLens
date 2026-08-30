@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from scanner import get_drives_info, scan_directory_tree, format_size
 from advisor import get_smart_recommendations
-from cleaner import clean_selected_recommendations, delete_target_path
+from cleaner import clean_selected_recommendations, delete_target_path, empty_windows_recycle_bin
 from explainer import analyze_directory_purpose
 
 app = FastAPI(
@@ -81,6 +81,15 @@ def clean_items(req: CleanRequest):
     
     result = clean_selected_recommendations(req.paths, use_recycle_bin=req.use_recycle_bin)
     return result
+
+@app.post("/api/empty-recycle-bin")
+def empty_recycle_bin_route():
+    """Empty Windows Recycle Bin across all drives to instantly reclaim storage."""
+    try:
+        res = empty_windows_recycle_bin()
+        return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/open-folder")
 def open_in_explorer(req: OpenFolderRequest):
